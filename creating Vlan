@@ -1,0 +1,40 @@
+#Here in this script we are defining OS to use python interpreter 
+#I have added line number 7 to mention python as the interpreter to be used so inorder to run this script 
+#All we have to type is ./scriptname.py
+
+
+
+#!/usr/bin/env python
+
+import getpass
+import sys
+import telnetlib
+
+HOST = "192.168.122.70"
+user = raw_input("Enter your telnet username: ")
+password = getpass.getpass()
+
+tn = telnetlib.Telnet(HOST)
+
+tn.read_until("Username: ")
+tn.write(user + "\n")
+if password:
+    tn.read_until("Password: ")
+    tn.write(password + "\n")
+
+tn.write("conf t\n")
+tn.write("hostname Switch1\n")
+tn.write("vlan 3\n")
+tn.write("exit\n")
+tn.write("vlan 4\n")
+tn.write("exit\n")
+tn.write("int vlan 3\n")
+tn.write("description VLAN 3\n")
+tn.write("no shut\n")
+tn.write("int vlan 4\n")
+tn.write("description VLAN 4\n")
+tn.write("no shut\n")
+tn.write("end\n")
+tn.write("exit\n")
+
+print tn.read_all()
